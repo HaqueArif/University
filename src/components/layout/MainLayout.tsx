@@ -1,73 +1,24 @@
-import React, { createElement } from "react";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, MenuProps, theme } from "antd";
+import { Button, Layout } from "antd";
 import { Outlet } from "react-router-dom";
+import Sidebar from "./Sidebar";
+import { useAppDispatch } from "../../redux/fetures/hooks";
+import { logout } from "../../redux/fetures/auth/authSlice";
 
-const { Header, Content, Footer, Sider } = Layout;
-const items: MenuProps["items"] = [
-  {
-    key: "aljd",
-    label: "Dashboard",
-  },
-
-  {
-    key: "aljsdfd",
-    label: "Profile",
-  },
-  {
-    key: "opauiklj",
-    label: "User Management",
-    children: [
-      {
-        key: "oiii",
-        label: "Create Admin",
-      },
-      {
-        key: "oiiadi",
-        label: "Create Student",
-      },
-    ],
-  },
-];
+const { Header, Content } = Layout;
 
 const MainLayout = () => {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const dispatch = useAppDispatch();
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <Layout style={{ height: "100vh" }}>
-      <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
-      >
-        <div
-          style={{
-            color: "white",
-            height: "4rem",
-            marginLeft: "25px",
-          }}
-        >
-          <h1>PH_U</h1>
-        </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["4"]}
-          items={items}
-        />
-      </Sider>
+      <Sidebar />
       <Layout>
-        <Header style={{ padding: 0 }} />
+        <Header>
+          <Button onClick={handleLogout}>Logout</Button>
+        </Header>
         <Content style={{ margin: "24px 16px 0" }}>
           <div
             style={{
@@ -78,9 +29,6 @@ const MainLayout = () => {
             <Outlet></Outlet>
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
-        </Footer>
       </Layout>
     </Layout>
   );
